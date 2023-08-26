@@ -22,7 +22,7 @@ class AddNotesActivity : AppCompatActivity() {
 
     fun btnAdd(view: View){
 
-        var dbManager = DatabaseHelper(this)
+        val dbManager = DatabaseHelper(this)
 
         val note = Note(
             id = 1,
@@ -30,7 +30,9 @@ class AddNotesActivity : AppCompatActivity() {
             content = etContent.text.toString()
         )
 
-        dbManager.insertNote(note)
+        if(note.title != "" && note.content != "") {
+            dbManager.insertNote(note)
+        }
 
         finish()
     }

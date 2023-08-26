@@ -6,7 +6,6 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.database.sqlite.SQLiteQueryBuilder
-import android.os.Build.ID
 import android.widget.Toast
 
 class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
@@ -45,11 +44,15 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         db.close()
     }
 
-    fun query(projection: Array<String>, selection: String, selectionArgs: Array<String> ,sortOrder: String): Cursor{
+    fun query(projection: Array<String>, selection: String, selectionArgs: Array<String>, sortOrder: String): Cursor{
         val qb = SQLiteQueryBuilder()
         qb.tables = TABLE_NAME
         val cursor = qb.query(writableDatabase, projection, selection, selectionArgs,null, null,  sortOrder)
         return cursor
+    }
+
+    fun delete(selection: String, selectionArgs: Array<String>): Int {
+        return writableDatabase.delete(TABLE_NAME, selection, selectionArgs)
     }
 
 }

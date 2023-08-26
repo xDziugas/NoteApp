@@ -2,11 +2,9 @@ package com.example.noteapp
 
 import android.annotation.SuppressLint
 import android.app.SearchManager
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -129,12 +127,20 @@ class MainActivity : AppCompatActivity() {
             viewHolder.titleTextView.text = note.title
             viewHolder.contentTextView.text = note.content
 
+            viewHolder.deleteImageView.setOnClickListener {
+                val dbManager = DatabaseHelper(this@MainActivity)
+                val selectionArgs = arrayOf(note.id.toString())
+                dbManager.delete("id=?", selectionArgs)
+                loadQuery("%")
+            }
+
             return myView
         }
 
         private inner class ViewHolder(view: View) {
             val titleTextView: TextView = view.findViewById(R.id.tv_title)
             val contentTextView: TextView = view.findViewById(R.id.tv_content)
+            val deleteImageView: ImageView = view.findViewById(R.id.iv_delete)
         }
 
     }
