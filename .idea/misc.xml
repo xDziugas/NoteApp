@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Dziugo RTX I7/Programming Projects/Kotlin/Plain/NoteApp/app/src/main/res/drawable/background_layout.xml" value="0.247" />
+        <entry key="..\:/Dziugo RTX I7/Programming Projects/Kotlin/Plain/NoteApp/app/src/main/res/drawable/btnblue.xml" value="0.188" />
+        <entry key="..\:/Dziugo RTX I7/Programming Projects/Kotlin/Plain/NoteApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.248" />
+        <entry key="..\:/Dziugo RTX I7/Programming Projects/Kotlin/Plain/NoteApp/app/src/main/res/layout/activity_add_notes.xml" value="0.22" />
+        <entry key="..\:/Dziugo RTX I7/Programming Projects/Kotlin/Plain/NoteApp/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Dziugo RTX I7/Programming Projects/Kotlin/Plain/NoteApp/app/src/main/res/layout/note_ticket.xml" value="0.33" />
+        <entry key="..\:/Dziugo RTX I7/Programming Projects/Kotlin/Plain/NoteApp/app/src/main/res/menu/main_menu.xml" value="0.5" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
