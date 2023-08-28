@@ -32,16 +32,15 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
     }
 
     fun insertNote(note: Note) {
-        val db = writableDatabase
+        writableDatabase.use { db->
+            val values = ContentValues().apply {
+                put(COLUMN_TITLE, note.title)
+                put(COLUMN_CONTENT, note.content)
+            }
 
-        val values = ContentValues().apply {
-            put(COLUMN_TITLE, note.title)
-            put(COLUMN_CONTENT, note.content)
+            db.insert(TABLE_NAME, null, values)
+            Toast.makeText(context, "Note Saved", Toast.LENGTH_LONG).show()
         }
-
-        db.insert(TABLE_NAME, null, values)
-        Toast.makeText(context, "Note Saved", Toast.LENGTH_LONG).show()
-        db.close()
     }
 
     fun query(
@@ -63,18 +62,20 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         )
     }
 
-    fun delete(selection: String, selectionArgs: Array<String>): Int {
-        return writableDatabase.delete(TABLE_NAME, selection, selectionArgs)
+    fun delete(selection: String, selectionArgs: Array<String>){
+        writableDatabase.use { db ->
+            db.delete(TABLE_NAME, selection, selectionArgs)
+        }
     }
 
-    fun update(note: Note, selection: String, selectionArgs: Array<String>): Int {
-
+    fun update(note: Note, selection: String, selectionArgs: Array<String>){
         val values = ContentValues().apply {
             put(COLUMN_TITLE, note.title)
             put(COLUMN_CONTENT, note.content)
         }
 
-        return writableDatabase.update(TABLE_NAME, values, selection, selectionArgs)
+        writableDatabase.use { db ->
+            db.update(TABLE_NAME, values, selection, selectionArgs)
+        }
     }
-
 }

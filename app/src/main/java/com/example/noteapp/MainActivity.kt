@@ -14,19 +14,15 @@ import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var lvNotes: ListView
+    private val lvNotes: ListView by lazy { findViewById(R.id.lv_noteList) }
     var listNotes: ArrayList<Note> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        lvNotes = findViewById(R.id.lv_noteList)
-
-        //Load from database
+        //Load notes from database
         loadQuery("%")
-
-
     }
 
     override fun onResume() {
@@ -42,24 +38,24 @@ class MainActivity : AppCompatActivity() {
 
         listNotes.clear()
 
-        if (cursor.moveToNext()) {
-            do {
-                val idIndex = cursor.getColumnIndex("id")
-                val titleIndex = cursor.getColumnIndex("Title")
-                val contentIndex = cursor.getColumnIndex("Content")
+        cursor.use {
+            if (cursor.moveToNext()) {
+                do {
+                    val idIndex = cursor.getColumnIndex("id")
+                    val titleIndex = cursor.getColumnIndex("Title")
+                    val contentIndex = cursor.getColumnIndex("Content")
 
-                if (idIndex >= 0 && titleIndex >= 0 && contentIndex >= 0) {
-                    val id = cursor.getInt(idIndex)
-                    val colTitle = cursor.getString(titleIndex)
-                    val content = cursor.getString(contentIndex)
+                    if (idIndex >= 0 && titleIndex >= 0 && contentIndex >= 0) {
+                        val id = cursor.getInt(idIndex)
+                        val colTitle = cursor.getString(titleIndex)
+                        val content = cursor.getString(contentIndex)
 
-                    val note = Note(id, colTitle, content)
-                    listNotes.add(note)
-                }
-            } while (cursor.moveToNext())
+                        val note = Note(id, colTitle, content)
+                        listNotes.add(note)
+                    }
+                } while (cursor.moveToNext())
+            }
         }
-
-        cursor.close()
 
         val myNotesAdapter = NotesAdapter(listNotes)
         lvNotes.adapter = myNotesAdapter
@@ -71,22 +67,23 @@ class MainActivity : AppCompatActivity() {
         val sv = menu.findItem(R.id.menu_search).actionView as SearchView
         val sm = getSystemService(Context.SEARCH_SERVICE) as SearchManager
 
-        sv.setSearchableInfo(sm.getSearchableInfo(componentName))
-        sv.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                Toast.makeText(applicationContext, query, Toast.LENGTH_LONG).show()
-                loadQuery("%$query%")
-                return false
-            }
+        sv.apply {
+            setSearchableInfo(sm.getSearchableInfo(componentName))
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    Toast.makeText(applicationContext, query, Toast.LENGTH_LONG).show()
+                    loadQuery("%$query%")
+                    return false
+                }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                return false
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    return false
+                }
+            })
+            setOnCloseListener {
+                loadQuery("%")
+                false
             }
-        })
-
-        sv.setOnCloseListener {
-            loadQuery("%")
-            false
         }
 
         return super.onCreateOptionsMenu(menu)
@@ -95,7 +92,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_search -> {
-
+                //TODO: not yet implemented
             }
 
             R.id.menu_addNote -> {
@@ -107,7 +104,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     inner class NotesAdapter(var listNotesAdapter: ArrayList<Note>) : BaseAdapter() {
-
         override fun getCount(): Int {
             return listNotesAdapter.size
         }
@@ -117,7 +113,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun getItemId(position: Int): Long {
-            return listNotesAdapter[position].id!!.toLong()  //position.toLong()
+            return listNotesAdapter[position].id!!.toLong()
         }
 
         @SuppressLint("InflateParams")
@@ -161,7 +157,5 @@ class MainActivity : AppCompatActivity() {
             val deleteImageView: ImageView = view.findViewById(R.id.iv_delete)
             val editImageView: ImageView = view.findViewById(R.id.iv_edit)
         }
-
     }
-
 }

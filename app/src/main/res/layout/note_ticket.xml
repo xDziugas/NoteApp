@@ -14,19 +14,21 @@
         android:orientation="vertical">
 
         <TextView
+            android:paddingStart="10dp"
+            android:paddingEnd="1dp"
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Title"
+            android:text="@string/title"
             android:textColor="@color/primary"
             android:textSize="18sp" />
 
         <TextView
-            android:paddingLeft="10dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="1dp"
             android:id="@+id/tv_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="ajhf kajsdkfj hakh dklfjhakdj hfkajh dkjfajdhfjah lsdkjh lkjah lkjsdh klahdlksj fhlaksjhsdfkjh asldh flkjasjdf"
             android:textColor="@color/black"
             android:textSize="18sp" />
 

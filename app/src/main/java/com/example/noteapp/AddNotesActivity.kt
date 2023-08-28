@@ -1,20 +1,17 @@
 package com.example.noteapp
 
-import android.os.Build.ID
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 
 class AddNotesActivity : AppCompatActivity() {
 
     private val etTitle: EditText by lazy { findViewById(R.id.et_addNotesTitle) }
     private val etContent: EditText by lazy { findViewById(R.id.et_addNotesContent) }
-    var id = 0
+    private var id = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_notes)
 
@@ -27,7 +24,6 @@ class AddNotesActivity : AppCompatActivity() {
                 etContent.setText(getString("Content"))
             }
         }
-
     }
 
     fun btnAdd(view: View){
