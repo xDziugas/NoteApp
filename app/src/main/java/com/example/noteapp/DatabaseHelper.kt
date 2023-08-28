@@ -44,15 +44,37 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         db.close()
     }
 
-    fun query(projection: Array<String>, selection: String, selectionArgs: Array<String>, sortOrder: String): Cursor{
+    fun query(
+        projection: Array<String>,
+        selection: String,
+        selectionArgs: Array<String>,
+        sortOrder: String
+    ): Cursor {
         val qb = SQLiteQueryBuilder()
         qb.tables = TABLE_NAME
-        val cursor = qb.query(writableDatabase, projection, selection, selectionArgs,null, null,  sortOrder)
-        return cursor
+        return qb.query(
+            writableDatabase,
+            projection,
+            selection,
+            selectionArgs,
+            null,
+            null,
+            sortOrder
+        )
     }
 
     fun delete(selection: String, selectionArgs: Array<String>): Int {
         return writableDatabase.delete(TABLE_NAME, selection, selectionArgs)
+    }
+
+    fun update(note: Note, selection: String, selectionArgs: Array<String>): Int {
+
+        val values = ContentValues().apply {
+            put(COLUMN_TITLE, note.title)
+            put(COLUMN_CONTENT, note.content)
+        }
+
+        return writableDatabase.update(TABLE_NAME, values, selection, selectionArgs)
     }
 
 }

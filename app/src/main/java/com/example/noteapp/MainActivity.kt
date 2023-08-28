@@ -29,6 +29,11 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        loadQuery("%")
+    }
+
     private fun loadQuery(title: String) {
         val dbManager = DatabaseHelper(this)
         val projection = arrayOf("id", "Title", "Content")
@@ -78,6 +83,11 @@ class MainActivity : AppCompatActivity() {
                 return false
             }
         })
+
+        sv.setOnCloseListener {
+            loadQuery("%")
+            false
+        }
 
         return super.onCreateOptionsMenu(menu)
     }
@@ -134,6 +144,14 @@ class MainActivity : AppCompatActivity() {
                 loadQuery("%")
             }
 
+            viewHolder.editImageView.setOnClickListener {
+                val intent = Intent(this@MainActivity, AddNotesActivity::class.java)
+                intent.putExtra("id", note.id)
+                intent.putExtra("Title", note.title)
+                intent.putExtra("Content", note.content)
+                startActivity(intent)
+            }
+
             return myView
         }
 
@@ -141,6 +159,7 @@ class MainActivity : AppCompatActivity() {
             val titleTextView: TextView = view.findViewById(R.id.tv_title)
             val contentTextView: TextView = view.findViewById(R.id.tv_content)
             val deleteImageView: ImageView = view.findViewById(R.id.iv_delete)
+            val editImageView: ImageView = view.findViewById(R.id.iv_edit)
         }
 
     }

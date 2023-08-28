@@ -9,19 +9,32 @@ import android.widget.Toast
 
 class AddNotesActivity : AppCompatActivity() {
 
-    private lateinit var etTitle: EditText
-    private lateinit var etContent: EditText
+    private val etTitle: EditText by lazy { findViewById(R.id.et_addNotesTitle) }
+    private val etContent: EditText by lazy { findViewById(R.id.et_addNotesContent) }
+    var id = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_notes)
 
-        etTitle = findViewById(R.id.et_addNotesTitle)
-        etContent = findViewById(R.id.et_addNotesContent)
+        val bundle = intent.extras
+
+        bundle?.apply {
+            id = getInt("id", 0)
+            if (id != 0) {
+                etTitle.setText(getString("Title"))
+                etContent.setText(getString("Content"))
+            }
+        }
+
     }
 
     fun btnAdd(view: View){
+        saveNote()
+    }
 
+    private fun saveNote() {
         val dbManager = DatabaseHelper(this)
 
         val note = Note(
@@ -30,8 +43,16 @@ class AddNotesActivity : AppCompatActivity() {
             content = etContent.text.toString()
         )
 
-        if(note.title != "" && note.content != "") {
-            dbManager.insertNote(note)
+        if (id == 0) {
+            if (note.title!!.isNotBlank() && note.content!!.isNotBlank()) {
+                dbManager.insertNote(note)
+            }
+        } else {
+            dbManager.update(
+                note = note,
+                selection = "id=?",
+                selectionArgs = arrayOf(id.toString())
+            )
         }
 
         finish()
